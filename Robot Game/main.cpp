@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
+#include "player.h"
 #include "button.h"
+#include "planet.h"
 
 int main()
 {
@@ -9,6 +11,8 @@ int main()
     Button close(1445, 860, 45, 30, "Exit");
     //Mouse position
     sf::Vector2i m;
+    Player p(100, 100);
+    Planet jupiter(500, 500, 100, 50);
     //Loop
     while(window.isOpen())
     {
@@ -36,6 +40,8 @@ int main()
         //Rendering
         window.clear();
         close.render(window);
+        p.render(window);
+        jupiter.render(window);
         window.display();
     }
     return 0;
