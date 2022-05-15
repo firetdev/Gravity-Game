@@ -24,7 +24,7 @@ Planet::Planet(int sx, int sy, int ss, int smass, std::string img)
 	path = img;
 	tex.loadFromFile(img);
 	sprite = sf::Sprite(tex);
-	sprite.setPosition(x, y);
+	sprite.setPosition(x - s, y - s);
 }
 
 void Planet::render(sf::RenderWindow &window)

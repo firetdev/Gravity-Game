@@ -2,6 +2,7 @@
 #include "player.h"
 #include "button.h"
 #include "planet.h"
+#include "rocket.h"
 
 int main()
 {
@@ -46,13 +47,19 @@ int main()
     //Player
     Player p(100, 430);
     //Buying
-    int matter = 1000;
+    int matter = 2000;
     int selected = 0;
     //Scenes
     int level = 1;
     int stage = 1;
     std::vector<Planet*> level1;
-    level1.push_back(new Planet(500, 430, 50, 0, "mars.png"));
+    level1.push_back(new Planet(500, 430, 45, 0, "meteor.png"));
+    std::vector<Planet*> level2;
+    level2.push_back(new Planet(500, 400, 45, 0, "meteor.png"));
+    level2.push_back(new Planet(750, 230, 45, 0, "meteor.png"));
+    level2.push_back(new Planet(750, 600, 45, 0, "meteor.png"));
+    //Rocket
+    Rocket r(1400, 400);
     //Loop
     while(window.isOpen())
     {
@@ -64,9 +71,9 @@ int main()
         if(stage == 2)
         {
             std::vector<Planet> planets;
-            if (level == 1)
+            if(level == 1)
             {
-                for (int i = 0; i < level1.size(); i++)
+                for(int i = 0; i < level1.size(); i++)
                 {
                     planets.push_back(*level1[i]);
                     if(p.collide(planets[i]))
@@ -75,9 +82,42 @@ int main()
                         p.x = 100;
                         p.y = 430;
                         level1 = {};
-                        level1.push_back(new Planet(500, 430, 50, 0, "mars.png"));
-                        matter = 1000;
+                        level1.push_back(new Planet(500, 430, 45, 0, "meteor.png"));
+                        matter = 2000;
                     }
+                }
+                if(r.playerCollide(p.x, p.y))
+                {
+                    stage = 1;
+                    level = 2;
+                    p.x = 100;
+                    p.y = 430;
+                    matter = 4000;
+                }
+            }
+            if(level == 2)
+            {
+                for(int i = 0; i < level2.size(); i++)
+                {
+                    planets.push_back(*level2[i]);
+                    if(p.collide(planets[i]))
+                    {
+                        stage = 1;
+                        p.x = 100;
+                        p.y = 430;
+                        level2 = {};
+                        level2.push_back(new Planet(500, 400, 45, 0, "meteor.png"));
+                        level2.push_back(new Planet(750, 230, 45, 0, "meteor.png"));
+                        level2.push_back(new Planet(750, 600, 45, 0, "meteor.png"));
+                        matter = 4000;
+                    }
+                }
+                if(r.playerCollide(p.x, p.y))
+                {
+                    stage = 1;
+                    level = 3;
+                    p.x = 100;
+                    p.y = 430;
                 }
             }
             p.update(planets);
@@ -106,6 +146,30 @@ int main()
                     stage = 2;
                 }
             }
+            //Select planets
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && stage == 1)
+            {
+                if(mars.hovering(m.x, m.y))
+                {
+                    selected = 1;
+                }
+                if(venus.hovering(m.x, m.y))
+                {
+                    selected = 2;
+                }
+                if(saturn.hovering(m.x, m.y))
+                {
+                    selected = 3;
+                }
+                if(jupiter.hovering(m.x, m.y))
+                {
+                    selected = 4;
+                }
+                if(sun.hovering(m.x, m.y))
+                {
+                    selected = 5;
+                }
+            }
             //Place planets
             if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && stage == 1)
             {
@@ -118,44 +182,64 @@ int main()
                         {
                             level1.push_back(new Planet(m.x, m.y, 50, 4000, "mars.png"));
                         }
+                        if(level == 2)
+                        {
+                            level2.push_back(new Planet(m.x, m.y, 50, 4000, "mars.png"));
+                        }
                     }
                     if (selected == 2 && matter >= 300)
                     {
                         matter -= 300;
-                        if (level == 1)
+                        if(level == 1)
                         {
                             level1.push_back(new Planet(m.x, m.y, 75, 7000, "venus.png"));
+                        }
+                        if(level == 2)
+                        {
+                            level2.push_back(new Planet(m.x, m.y, 75, 7000, "venus.png"));
                         }
                     }
                     if (selected == 3 && matter >= 750)
                     {
                         matter -= 750;
-                        if (level == 1)
+                        if(level == 1)
                         {
                             level1.push_back(new Planet(m.x, m.y, 100, 9000, "saturn.png"));
                         }
+                        if(level == 2)
+                        {
+                            level2.push_back(new Planet(m.x, m.y, 100, 9000, "saturn.png"));
+                        }
                     }
-                    if (selected == 4 && matter >= 1000)
+                    if(selected == 4 && matter >= 1000)
                     {
                         matter -= 1000;
-                        if (level == 1)
+                        if(level == 1)
                         {
                             level1.push_back(new Planet(m.x, m.y, 150, 13000, "jupiter.png"));
                         }
+                        if(level == 2)
+                        {
+                            level2.push_back(new Planet(m.x, m.y, 150, 13000, "jupiter.png"));
+                        }
                     }
-                    if (selected == 5 && matter >= 1500)
+                    if(selected == 5 && matter >= 1500)
                     {
                         matter -= 1500;
-                        if (level == 1)
+                        if(level == 1)
                         {
                             level1.push_back(new Planet(m.x, m.y, 50, 15000, "dwarf.png"));
+                        }
+                        if(level == 2)
+                        {
+                            level2.push_back(new Planet(m.x, m.y, 50, 15000, "dwarf.png"));
                         }
                     }
                 }
             }
         }
         //Rendering
-        window.clear();
+        window.clear(sf::Color(15, 15, 15));
         close.render(window);
         start.render(window);
         mars.render(window);
@@ -168,12 +252,20 @@ int main()
         window.draw(s3);
         window.draw(s4);
         window.draw(s5);
+        r.render(window);
         p.render(window);
         if(level == 1)
         {
             for(int i = 0; i < level1.size(); i++)
             {
                 level1[i]->render(window);
+            }
+        }
+        if(level == 2)
+        {
+            for (int i = 0; i < level2.size(); i++)
+            {
+                level2[i]->render(window);
             }
         }
         window.display();

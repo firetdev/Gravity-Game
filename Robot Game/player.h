@@ -23,7 +23,7 @@ Player::Player(float sx, float sy)
 	rotation = 0;
 	sprite = sf::CircleShape(20);
 	sprite.setFillColor(sf::Color::White);
-	sprite.setPosition(x, y);
+	sprite.setPosition(x - 20, y - 20);
 	velocity.push_back(0);
 	velocity.push_back(0);
 }
@@ -68,8 +68,8 @@ void Player::render(sf::RenderWindow &window)
 
 bool Player::collide(Planet &planet)
 {
-	int changeX = planet.x - x;
-	int changeY = planet.y - y;
+	int changeX = (planet.x - planet.s / 2) - x;
+	int changeY = (planet.y - planet.s / 2) - y;
 	unsigned int change = sqrt(changeX * changeX + changeY * changeY);
 	if (change < (planet.s / 2))
 	{

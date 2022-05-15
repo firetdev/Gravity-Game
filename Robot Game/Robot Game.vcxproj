@@ -148,6 +148,7 @@
     <ClInclude Include="button.h" />
     <ClInclude Include="planet.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="rocket.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
